@@ -6,7 +6,7 @@ This simple script is perfect if you want to export Illustrator artboards quickl
 -  It's designed for a super efficient workflow. Just select the output folder.
 -  It smartly handles artboard names, ignoring files with a leading hyphen
 -  Artboards with an "@2x" modifier will be down-scaled, not upscaled.
--  It allows artboards to have folder paths in their name, so that `path/to/square` will create `sqaure.png` in the `to` subfolder of `path`.
+-  It allows artboards to have folder paths in their name, so that `path/to/square` will create `square.png` in the `to` subfolder of `path`.
 
 
 How To Install the Script

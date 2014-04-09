@@ -1,15 +1,12 @@
 # Stephen Hutchings (https://github.com/stephenhutchings)
 # MIT License Copyright (c) 2014
 
-sizeOptions = [
-  {
-    suffix: ""
-    scale: 100
-  }
-  {
-    suffix: "@2x"
-    scale: 200
-  }
+sizes = [
+  suffix: ""
+  scale: 100
+,
+  suffix: "@2x"
+  scale: 200
 ]
 
 Exporter =
@@ -17,14 +14,14 @@ Exporter =
   activeDoc: app.activeDocument
 
   initialize: ->
-    if @doc and @parentDir
-      for option in sizeOptions
-        @exportArtboardsToFiles option.scale, option.suffix
+    if @activeDoc and @parentDir
+      for size in sizes
+        @exportArtboardsToFiles size.scale, size.suffix
 
     return
 
   exportArtboardsToFiles: (scale, suffix) ->
-    for artboard, i in @doc.artboards
+    for artboard, i in @activeDoc.artboards
       name = artboard.name
 
       # Artboards with a leading hyphen are ignored
@@ -33,11 +30,11 @@ Exporter =
       # Assume that files already suffixed "@2x" are meant to be down-scaled
       # without a duplicate "@2x"
       if name.slice(-3) is "@2x"
-        scale = scale / 2
+        scale *= 0.5
         name = name.slice(0, -3)
 
       # Set the active artboard for "artBoardClipping" to apply
-      @doc.artboards.setActiveArtboardIndex i
+      @activeDoc.artboards.setActiveArtboardIndex i
 
       # The final directory structure and filename
       fileName = @createFoldersFromName(name)
@@ -52,7 +49,7 @@ Exporter =
       exportOptions.verticalScale = scale
       exportOptions.horizontalScale = scale
 
-      @doc.exportFile file, ExportType.PNG24, exportOptions
+      @activeDoc.exportFile file, ExportType.PNG24, exportOptions
 
     return
 
@@ -63,7 +60,7 @@ Exporter =
     dir = null
 
     for item, i in dirs.slice(0, -1)
-      dir = new Folder(@folder.fsName + "/" + dirs.slice(0, i + 1).join("/"))
+      dir = new Folder(@parentDir.fsName + "/" + dirs.slice(0, i + 1).join("/"))
       dir.create() unless dir.exists
 
     return (dir || @parentDir).fsName + "/" + dirs.pop()
