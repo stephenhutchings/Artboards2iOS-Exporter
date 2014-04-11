@@ -26,16 +26,17 @@ Exporter = {
     }
   },
   exportArtboardsToFiles: function(scale, suffix) {
-    var artboard, exportOptions, file, fileName, i, name, _i, _len, _ref;
+    var artboard, exportOptions, file, fileName, i, name, _i, _len, _ref, _scl;
     _ref = this.activeDoc.artboards;
     for (i = _i = 0, _len = _ref.length; _i < _len; i = ++_i) {
       artboard = _ref[i];
       name = artboard.name;
+      _scl = scale;
       if (name[0] === "-") {
         continue;
       }
       if (name.slice(-3) === "@2x") {
-        scale *= 0.5;
+        _scl *= 0.5;
         name = name.slice(0, -3);
       }
       this.activeDoc.artboards.setActiveArtboardIndex(i);
@@ -45,8 +46,8 @@ Exporter = {
       exportOptions.transparency = true;
       exportOptions.artBoardClipping = true;
       exportOptions.antiAliasing = true;
-      exportOptions.verticalScale = scale;
-      exportOptions.horizontalScale = scale;
+      exportOptions.verticalScale = _scl;
+      exportOptions.horizontalScale = _scl;
       this.activeDoc.exportFile(file, ExportType.PNG24, exportOptions);
     }
   },

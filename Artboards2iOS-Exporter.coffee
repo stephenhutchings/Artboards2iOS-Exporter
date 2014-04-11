@@ -23,6 +23,7 @@ Exporter =
   exportArtboardsToFiles: (scale, suffix) ->
     for artboard, i in @activeDoc.artboards
       name = artboard.name
+      _scl = scale
 
       # Artboards with a leading hyphen are ignored
       continue if name[0] is "-"
@@ -30,7 +31,7 @@ Exporter =
       # Assume that files already suffixed "@2x" are meant to be down-scaled
       # without a duplicate "@2x"
       if name.slice(-3) is "@2x"
-        scale *= 0.5
+        _scl *= 0.5
         name = name.slice(0, -3)
 
       # Set the active artboard for "artBoardClipping" to apply
@@ -46,8 +47,8 @@ Exporter =
       exportOptions.transparency = true
       exportOptions.artBoardClipping = true
       exportOptions.antiAliasing = true
-      exportOptions.verticalScale = scale
-      exportOptions.horizontalScale = scale
+      exportOptions.verticalScale = _scl
+      exportOptions.horizontalScale = _scl
 
       @activeDoc.exportFile file, ExportType.PNG24, exportOptions
 
